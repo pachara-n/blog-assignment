@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
 export const authOptions: NextAuthOptions = {
+  // JWT strategy เก็บ session ใน cookie แทน database — ไม่ต้องมี Session table
+  // ข้อเสียคือ revoke session ทันทีไม่ได้ (ต้องรอ token หมดอายุ)
   session: { strategy: 'jwt' },
   pages: { signIn: '/admin/login' },
   providers: [
@@ -21,6 +23,8 @@ export const authOptions: NextAuthOptions = {
         })
         if (!admin) return null
 
+        // bcrypt.compare เปรียบเทียบ plain text กับ hash โดยไม่ต้อง decrypt
+        // ห้ามเก็บ password เป็น plain text ใน DB เด็ดขาด
         const isValid = await bcrypt.compare(credentials.password, admin.password)
         if (!isValid) return null
 
@@ -29,6 +33,8 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    // jwt callback รันทุกครั้งที่สร้างหรือ refresh token
+    // user object มีค่าเฉพาะตอน login ครั้งแรกเท่านั้น ครั้งต่อไปจะเป็น undefined
     jwt({ token, user }) {
       if (user) {
         token.id = user.id
@@ -36,6 +42,8 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
+    // session callback รันทุกครั้งที่เรียก getServerSession หรือ useSession
+    // ต้อง map จาก token → session เองเพราะ NextAuth ไม่ทำให้อัตโนมัติ
     session({ session, token }) {
       if (token && session.user) {
         session.user.name = token.name as string
