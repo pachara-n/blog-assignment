@@ -43,22 +43,22 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 - `app/api/blogs/route.ts` — GET public listing (search + pagination), POST create (admin)
 - `app/api/blogs/[id]/route.ts` — GET, PUT, DELETE
 - `app/api/blogs/[id]/publish/route.ts` — PATCH toggle isPublished
-- `app/api/blogs/[id]/images/route.ts` — POST/DELETE Supabase Storage (bucket: `blog-images`)
+- `app/api/blogs/[id]/images/route.ts` — POST/DELETE Supabase Storage (bucket from `SUPABASE_STORAGE_BUCKET` env var)
 - `app/api/admin/blogs/route.ts` — GET all blogs including unpublished (admin only)
 - `app/api/comments/route.ts` — POST submit (Thai regex enforced server-side)
 - `app/api/comments/[id]/route.ts` — PATCH status (admin only)
 - `prisma/schema.prisma` — full schema (Admin, Blog, BlogImage, Comment)
 - `prisma/migrations/` — committed migration files
-- `prisma/seed.ts` — idempotent admin seeder using `upsert`
+- `prisma/seed.ts` — seeds admin account + 15 published blogs + 1 draft + gallery images + comments (idempotent, skips existing slugs)
 - `types/css.d.ts` — CSS module type declaration for TypeScript
-- `.env.example` — template for all 7 required env vars
-- `next.config.mjs` — MJS format required (Next.js 14 does not support `.ts` config); Supabase image domain configured
+- `.env.example` — template for all 8 required env vars (includes `SUPABASE_STORAGE_BUCKET`)
+- `next.config.mjs` — MJS format required (Next.js 14 does not support `.ts` config); Supabase + Pexels image domains configured
 
 ### Setup required before dev (needs real Supabase credentials)
-1. Copy `.env.example` → `.env` and fill in Supabase + NextAuth values
+1. Copy `.env.example` → `.env` and fill in all values including `SUPABASE_STORAGE_BUCKET`
 2. `npx prisma migrate dev --name init` — creates DB tables
-3. `npx prisma db seed` — creates admin account (admin / admin1234)
-4. Create Supabase Storage bucket named `blog-images` with public read access
+3. Create Supabase Storage bucket (any name, public read access) and set the name in `.env`
+4. `npx prisma db seed` — seeds admin + 16 blogs + gallery images + comments
 5. `npm run dev`
 
 ## Commands
@@ -83,6 +83,7 @@ NEXTAUTH_URL=                    # http://localhost:3000 for local dev
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=       # Server-side file uploads — never expose to browser
+SUPABASE_STORAGE_BUCKET=         # Name of the Supabase Storage bucket for blog images
 ```
 
 ## Architecture
@@ -129,7 +130,12 @@ Range `ก-๙` covers all Thai characters including Thai numerals. Latin letter
 
 ### Seed Script
 
-`prisma/seed.ts` creates the single admin (username: `admin`, password: `admin1234` hashed with bcrypt, 12 rounds). Uses `upsert` so it is idempotent. Never store plain-text passwords in code.
+`prisma/seed.ts` creates:
+- Admin account (username: `admin`, password: `admin1234` hashed with bcrypt 12 rounds) via `upsert` — idempotent
+- 15 published blogs + 1 draft, each with Thai content, Pexels cover image, gallery images (1–3), and realistic comments (APPROVED / PENDING / REJECTED mix)
+- Skips blogs whose `slug` already exists — safe to re-run without duplicating data
+
+To reset and re-seed from scratch, delete all rows first (comments → blogImages → blogs → admin) then run `npx prisma db seed`.
 
 ## Version Constraints (important)
 
