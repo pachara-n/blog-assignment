@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+// แปลง title เป็น URL-safe slug: lowercase, เว้นวรรค→ขีด, ตัดอักขระพิเศษออก
+// ภาษาไทยจะถูกตัดออกทั้งหมด เพราะ URL ไม่ควรมี non-ASCII characters
 function slugify(title: string) {
   return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 }
@@ -28,6 +30,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 
   const slug = rawSlug ? rawSlug.trim() : slugify(title)
+  // NOT: { id: params.id } ยกเว้น blog ตัวเองออกจากการเช็ค
+  // เพราะถ้า slug ไม่เปลี่ยน การ findFirst จะเจอตัวเองและ return error โดยไม่จำเป็น
   const existing = await prisma.blog.findFirst({ where: { slug, NOT: { id: params.id } } })
   if (existing) return NextResponse.json({ error: 'slug นี้ถูกใช้งานแล้ว' }, { status: 409 })
 
