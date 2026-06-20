@@ -17,41 +17,49 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 
 ## Current Status
 
-**Foundation is complete and committed (9 commits).** No UI pages have been built yet.
+**All UI pages and API routes are complete.** The app is fully functional end-to-end.
 
 ### What exists
 - `lib/prisma.ts` — singleton PrismaClient (prevents HMR connection pool exhaustion)
 - `lib/supabase.ts` — public client (`NEXT_PUBLIC_SUPABASE_ANON_KEY`) and admin client (`SUPABASE_SERVICE_ROLE_KEY`)
 - `lib/auth.ts` — NextAuth options with CredentialsProvider + JWT callbacks
 - `app/api/auth/[...nextauth]/route.ts` — NextAuth App Router handler
-- `middleware.ts` — protects all `/admin/*` routes, redirects to `/admin/login`
-- `app/layout.tsx` — root layout, `lang="th"`, no Geist font
+- `middleware.ts` — protects all `/admin/*` routes, redirects to `/admin/login` (uses `withAuth` + `pages.signIn`)
+- `app/layout.tsx` — root layout, `lang="th"`, Noto Sans Thai font
 - `app/globals.css` — Tailwind directives only
-- `app/page.tsx` — placeholder returning null (real public page goes in `app/(public)/page.tsx`)
+- `app/(public)/layout.tsx` — sticky header + footer shared across public pages
+- `app/(public)/page.tsx` — blog listing (search, 3-col grid, pagination 10/page)
+- `app/(public)/blog/[slug]/page.tsx` — blog detail (view count increment, gallery, approved comments)
+- `app/admin/login/page.tsx` — NextAuth credentials signIn
+- `app/admin/blogs/page.tsx` — blog management table (publish toggle, delete)
+- `app/admin/blogs/new/page.tsx` — create blog
+- `app/admin/blogs/[id]/edit/page.tsx` — edit blog
+- `app/admin/comments/page.tsx` — comment moderation (filter tabs, approve/reject)
+- `components/AdminNav.tsx` — shared admin top nav (active tab, signOut)
+- `components/BlogTable.tsx` — client-side publish toggle + delete
+- `components/BlogEditor.tsx` — slug auto-gen, cover + gallery upload (max 6)
+- `components/CommentForm.tsx` — public comment submit with Thai regex validation
+- `components/CommentTable.tsx` — approve/reject with optimistic UI
+- `app/api/blogs/route.ts` — GET public listing (search + pagination), POST create (admin)
+- `app/api/blogs/[id]/route.ts` — GET, PUT, DELETE
+- `app/api/blogs/[id]/publish/route.ts` — PATCH toggle isPublished
+- `app/api/blogs/[id]/images/route.ts` — POST/DELETE Supabase Storage (bucket: `blog-images`)
+- `app/api/admin/blogs/route.ts` — GET all blogs including unpublished (admin only)
+- `app/api/comments/route.ts` — POST submit (Thai regex enforced server-side)
+- `app/api/comments/[id]/route.ts` — PATCH status (admin only)
 - `prisma/schema.prisma` — full schema (Admin, Blog, BlogImage, Comment)
+- `prisma/migrations/` — committed migration files
 - `prisma/seed.ts` — idempotent admin seeder using `upsert`
+- `types/css.d.ts` — CSS module type declaration for TypeScript
 - `.env.example` — template for all 7 required env vars
 - `next.config.mjs` — MJS format required (Next.js 14 does not support `.ts` config); Supabase image domain configured
 
-### What needs to be built (UI pages)
-```
-app/
-├── (public)/
-│   ├── page.tsx                  # Blog listing with search + pagination
-│   └── blog/[slug]/page.tsx      # Blog detail (404 if unpublished)
-└── admin/
-    ├── login/page.tsx
-    ├── blogs/page.tsx            # Manage all blogs
-    ├── blogs/new/page.tsx
-    ├── blogs/[id]/edit/page.tsx
-    └── comments/page.tsx         # Moderate comments
-```
-
-### User-side setup required before dev (needs real Supabase credentials)
+### Setup required before dev (needs real Supabase credentials)
 1. Copy `.env.example` → `.env` and fill in Supabase + NextAuth values
 2. `npx prisma migrate dev --name init` — creates DB tables
-3. `npx prisma db seed` — creates admin account
-4. `npm run dev`
+3. `npx prisma db seed` — creates admin account (admin / admin1234)
+4. Create Supabase Storage bucket named `blog-images` with public read access
+5. `npm run dev`
 
 ## Commands
 
@@ -79,7 +87,7 @@ SUPABASE_SERVICE_ROLE_KEY=       # Server-side file uploads — never expose to 
 
 ## Architecture
 
-### Route Structure (planned)
+### Route Structure
 
 ```
 app/
@@ -130,6 +138,6 @@ These versions were pinned deliberately — do not upgrade without testing:
 - **Prisma 5** (`prisma@5`, `@prisma/client@5`) — Prisma 7 has a completely different API and is incompatible
 - **NextAuth v4** (`next-auth@4`) — v5/Auth.js beta has different configuration
 - **Tailwind CSS v3** — v4 uses different config format
-- **TypeScript 5** — v6 has breaking changes; `"ignoreDeprecations"` in tsconfig must be `"5.0"` if present (or removed)
+- **TypeScript 5** — v6 has breaking changes; tsconfig uses `"target": "ES2017"` (ES5 is deprecated in TS 5.x)
 - **Next.js 14** — config file must be `next.config.mjs` (not `.ts`)
 - Seed script runs via `ts-node --compiler-options {"module":"CommonJS"}` because tsconfig uses ESNext modules
