@@ -88,7 +88,7 @@ export default async function BlogListingPage({
       {/* No results */}
       {blogs.length === 0 && (
         <div style={{ textAlign: 'center', padding: '80px 0' }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d5d5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d5d5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16, display: 'block', margin: '0 auto 16px' }}>
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
           </svg>
           <p style={{ fontSize: 17, color: '#757575', marginBottom: 8 }}>ไม่พบบทความที่ค้นหา</p>
