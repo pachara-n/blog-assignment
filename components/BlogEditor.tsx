@@ -239,8 +239,9 @@ export default function BlogEditor({
                 </div>
               ) : (
                 <button
-                  onClick={() => coverInputRef.current?.click()}
-                  style={{ width: '100%', aspectRatio: '16/10', border: '2px dashed #e0e0e0', borderRadius: 8, background: '#fafafa', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'inherit' }}
+                  onClick={() => savedBlogId.current && coverInputRef.current?.click()}
+                  disabled={!savedBlogId.current}
+                  style={{ width: '100%', aspectRatio: '16/10', border: '2px dashed #e0e0e0', borderRadius: 8, background: '#fafafa', cursor: savedBlogId.current ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'inherit', opacity: savedBlogId.current ? 1 : 0.5 }}
                 >
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
@@ -249,6 +250,9 @@ export default function BlogEditor({
                 </button>
               )}
               <input ref={coverInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleCoverChange} />
+              {!savedBlogId.current && (
+                <p style={{ fontSize: 12, color: '#f59e0b', marginTop: 8 }}>กรุณาบันทึกบทความก่อนอัปโหลดรูป</p>
+              )}
             </div>
 
             {/* Gallery */}
@@ -277,8 +281,9 @@ export default function BlogEditor({
               )}
               {galleryImages.length < 6 && (
                 <button
-                  onClick={() => galleryInputRef.current?.click()}
-                  style={{ width: '100%', height: 40, border: '1px dashed #e0e0e0', borderRadius: 6, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, color: '#9ca3af', fontFamily: 'inherit' }}
+                  onClick={() => savedBlogId.current && galleryInputRef.current?.click()}
+                  disabled={!savedBlogId.current}
+                  style={{ width: '100%', height: 40, border: '1px dashed #e0e0e0', borderRadius: 6, background: 'transparent', cursor: savedBlogId.current ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, color: '#9ca3af', fontFamily: 'inherit', opacity: savedBlogId.current ? 1 : 0.5 }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
