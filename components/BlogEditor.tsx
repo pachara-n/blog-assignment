@@ -36,12 +36,16 @@ export default function BlogEditor({
   const [content, setContent] = useState(initialContent)
   const [coverUrl, setCoverUrl] = useState(initialCoverUrl)
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(initialImages)
+  // autoSlug: true = slug สร้างจาก title อัตโนมัติ, false = user พิมพ์เอง
+  // เริ่มต้นที่ true ในโหมด create แต่จะปิดทันทีที่ user แตะ slug field
   const [autoSlug, setAutoSlug] = useState(mode === 'create')
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [error, setError] = useState('')
   const coverInputRef = useRef<HTMLInputElement>(null)
   const galleryInputRef = useRef<HTMLInputElement>(null)
+  // useRef แทน useState เพราะไม่ต้องการให้ component re-render เมื่อ blogId เปลี่ยน
+  // ใช้เก็บ id ของ blog ที่เพิ่ง create ได้ เพื่อให้ upload รูปได้ทันทีหลัง save
   const savedBlogId = useRef<string | undefined>(blogId)
 
   function handleTitleChange(val: string) {
@@ -91,6 +95,8 @@ export default function BlogEditor({
     setError('')
     if (!title.trim() || !content.trim()) { setError('กรุณากรอกชื่อและเนื้อหาบทความ'); return }
 
+    // coverImageUrl ต้องไม่ empty string เพราะ API validate required
+    // ใส่ 'placeholder' ชั่วคราวถ้ายังไม่ได้อัปโหลดรูป — admin จะมาเพิ่มทีหลังได้
     const body = { title, slug, content, coverImageUrl: coverUrl || 'placeholder' }
     setSaving(true)
 

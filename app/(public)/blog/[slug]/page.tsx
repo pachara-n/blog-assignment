@@ -22,9 +22,12 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
     },
   })
 
+  // ซ่อน unpublished blog จาก public — return 404 แทน 403
+  // เพื่อไม่ให้ผู้ใช้รู้ว่า slug นั้นมีอยู่จริงหรือเปล่า
   if (!blog || !blog.isPublished) notFound()
 
-  // Atomic view count increment (no-store prevents double-count)
+  // increment แบบ atomic ใน DB โดยตรงแทนการ read → +1 → write
+  // ถ้าทำแบบ read+write สองคนเปิดพร้อมกันจะนับแค่ครั้งเดียว (race condition)
   await prisma.blog.update({
     where: { id: blog.id },
     data: { viewCount: { increment: 1 } },
