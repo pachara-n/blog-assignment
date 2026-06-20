@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 function slugify(title: string) {
   return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 }

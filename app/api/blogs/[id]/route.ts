@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 // แปลง title เป็น URL-safe slug: lowercase, เว้นวรรค→ขีด, ตัดอักขระพิเศษออก
 // ภาษาไทยจะถูกตัดออกทั้งหมด เพราะ URL ไม่ควรมี non-ASCII characters
 function slugify(title: string) {

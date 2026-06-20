@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { supabaseAdmin } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET!
 const MAX_GALLERY = 6
 

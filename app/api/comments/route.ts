@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 // ก-๙ ครอบคลุม Unicode ของภาษาไทยทั้งหมดรวมถึงตัวเลขไทย (๐-๙)
 // flag /u เปิด Unicode mode เพื่อให้ range ทำงานถูกต้องกับ multi-byte characters
 const THAI_REGEX = /^[ก-๙0-9\s.,!?]+$/u
