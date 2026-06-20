@@ -3,6 +3,8 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import BlogEditor from '@/components/BlogEditor'
 
+export const dynamic = 'force-dynamic'
+
 export default async function NewBlogPage() {
   const session = await getServerSession(authOptions)
   if (!session) redirect('/admin/login')
