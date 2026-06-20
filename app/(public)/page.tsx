@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 const GRADIENTS = [
   'linear-gradient(135deg, #4f46e5, #7c3aed)',
   'linear-gradient(135deg, #059669, #047857)',

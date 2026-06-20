@@ -3,6 +3,8 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import AdminNav from '@/components/AdminNav'
+
+export const dynamic = 'force-dynamic'
 import CommentTable from '@/components/CommentTable'
 
 export default async function AdminCommentsPage() {

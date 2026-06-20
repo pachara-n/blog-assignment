@@ -4,6 +4,8 @@ import { redirect, notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import BlogEditor from '@/components/BlogEditor'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditBlogPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions)
   if (!session) redirect('/admin/login')

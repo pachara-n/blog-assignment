@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import CommentForm from '@/components/CommentForm'
 
+export const dynamic = 'force-dynamic'
+
 function formatDate(date: Date) {
   return date.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })
 }

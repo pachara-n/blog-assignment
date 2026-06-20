@@ -3,6 +3,8 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
 import AdminNav from '@/components/AdminNav'
 import BlogTable from '@/components/BlogTable'
 
