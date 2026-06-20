@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Blog {
+  id            String      @id @default(cuid())
+  title         String
+  slug          String      @unique
+  content       String      @db.Text
+  coverImageUrl String
+  viewCount     Int         @default(0)
+  isPublished   Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  images        BlogImage[]
+  comments      Comment[]
+}
+
+model BlogImage {
+  id     String @id @default(cuid())
+  url    String
+  order  Int    @default(0)
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id         String        @id @default(cuid())
+  authorName String
+  content    String        @db.Text
+  status     CommentStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  blogId     String
+  blog       Blog          @relation(fields: [blogId], references: [id], onDelete: Cascade)
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
