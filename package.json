@@ -1,14 +1,16 @@
 {
   "name": "metier-blog",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^7.8.0",
     "@supabase/supabase-js": "^2.108.2",
@@ -20,7 +22,6 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
     "@types/node": "^20.19.43",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
