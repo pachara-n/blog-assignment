@@ -2,8 +2,17 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'PacharaBlog',
+  title: {
+    default: 'PacharaBlog',
+    template: '%s | PacharaBlog',
+  },
   description: 'บทความเทคโนโลยี การเขียนโปรแกรม และเทรนด์ดิจิทัลล่าสุด',
+  metadataBase: new URL('https://blog.pachara.app'),
+  openGraph: {
+    siteName: 'PacharaBlog',
+    locale: 'th_TH',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
