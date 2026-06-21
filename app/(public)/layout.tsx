@@ -23,7 +23,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
       <footer className="border-t border-[#eaeaea] mt-8">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-8 py-8 text-center">
-          <p className="text-[13px] text-[#9ca3af]">© 2026 PacharaBlog — สงวนลิขสิทธิ์</p>
+          <p className="text-[13px] text-[#9ca3af]">© {new Date().getFullYear()} PacharaBlog</p>
         </div>
       </footer>
     </div>
