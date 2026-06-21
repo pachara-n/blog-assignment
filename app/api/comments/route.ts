@@ -3,11 +3,31 @@ import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
-// ก-๙ ครอบคลุม Unicode ของภาษาไทยทั้งหมดรวมถึงตัวเลขไทย (๐-๙)
-// flag /u เปิด Unicode mode เพื่อให้ range ทำงานถูกต้องกับ multi-byte characters
 const THAI_REGEX = /^[ก-๙0-9\s.,!?]+$/u
 
+// จำกัด 5 ความคิดเห็นต่อ IP ต่อ 60 วินาที เพื่อป้องกัน spam
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+const LIMIT = 5
+const WINDOW_MS = 60_000
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
+    return false
+  }
+  if (entry.count >= LIMIT) return true
+  entry.count++
+  return false
+}
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: 'ส่งความคิดเห็นบ่อยเกินไป กรุณารอสักครู่' }, { status: 429 })
+  }
+
   const body = await req.json()
   const { blogId, authorName, content } = body
 
