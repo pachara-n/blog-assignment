@@ -17,8 +17,8 @@ type Props = {
   initialImages?: GalleryImage[]
 }
 
-function slugify(title: string) {
-  return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+function generateSlug() {
+  return `blog-${Math.floor(Date.now() / 1000)}`
 }
 
 export default function BlogEditor({
@@ -32,13 +32,12 @@ export default function BlogEditor({
 }: Props) {
   const router = useRouter()
   const [title, setTitle] = useState(initialTitle)
-  const [slug, setSlug] = useState(initialSlug)
+  const [slug, setSlug] = useState(initialSlug || generateSlug())
   const [content, setContent] = useState(initialContent)
-  const [coverUrl, setCoverUrl] = useState(initialCoverUrl)
+  const [coverUrl, setCoverUrl] = useState(initialCoverUrl === 'placeholder' ? '' : initialCoverUrl)
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(initialImages)
   // autoSlug: true = slug สร้างจาก title อัตโนมัติ, false = user พิมพ์เอง
   // เริ่มต้นที่ true ในโหมด create แต่จะปิดทันทีที่ user แตะ slug field
-  const [autoSlug, setAutoSlug] = useState(mode === 'create')
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -50,7 +49,6 @@ export default function BlogEditor({
 
   function handleTitleChange(val: string) {
     setTitle(val)
-    if (autoSlug) setSlug(slugify(val))
   }
 
   async function uploadImage(file: File, type: 'cover' | 'gallery') {
@@ -118,6 +116,7 @@ export default function BlogEditor({
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
       router.push(`/admin/blogs/${created.id}/edit`)
+      router.refresh()
     } else {
       const res = await fetch(`/api/blogs/${savedBlogId.current}`, {
         method: 'PUT',
@@ -177,17 +176,17 @@ export default function BlogEditor({
                 <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#242424', marginBottom: 6 }}>URL Slug</label>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span style={{ height: 46, padding: '0 12px', background: '#fafafa', border: '1px solid #e5e5e5', borderRight: 'none', borderRadius: '8px 0 0 8px', fontSize: 13, color: '#9ca3af', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                    pacharablog.com/
+                    blog.pachara.app/blog/
                   </span>
                   <input
                     type="text"
                     value={slug}
-                    onChange={e => { setSlug(e.target.value); setAutoSlug(false) }}
+                    onChange={e => setSlug(e.target.value)}
                     placeholder="auto-generated-slug"
                     style={{ flex: 1, height: 46, padding: '0 14px', border: '1px solid #e5e5e5', borderRadius: '0 8px 8px 0', fontSize: 14, fontFamily: 'monospace', color: '#242424', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
                   />
                 </div>
-                <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>Slug จะถูกสร้างอัตโนมัติจากชื่อ Blog หรือพิมพ์เองได้</p>
+                <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>Slug จะถูกสร้างอัตโนมัติ หรือพิมพ์เองได้</p>
               </div>
 
               {/* Content */}
@@ -195,26 +194,13 @@ export default function BlogEditor({
                 <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#242424', marginBottom: 6 }}>
                   เนื้อหา Blog <span style={{ color: '#ef4444' }}>*</span>
                 </label>
-                <div style={{ border: '1px solid #e5e5e5', borderRadius: 8, overflow: 'hidden' }}>
-                  <div style={{ display: 'flex', gap: 2, padding: '8px 10px', background: '#fafafa', borderBottom: '1px solid #e5e5e5', flexWrap: 'wrap' }}>
-                    {['B', 'I', 'U'].map(t => (
-                      <button key={t} style={{ width: 32, height: 32, border: 'none', background: 'transparent', borderRadius: 4, cursor: 'pointer', fontSize: 14, fontWeight: t === 'B' ? 700 : 400, fontStyle: t === 'I' ? 'italic' : 'normal', textDecoration: t === 'U' ? 'underline' : 'none', color: '#555', fontFamily: 'inherit' }}>
-                        {t}
-                      </button>
-                    ))}
-                    <div style={{ width: 1, height: 24, background: '#e0e0e0', margin: '4px 6px' }} />
-                    {['H1', 'H2'].map(t => (
-                      <button key={t} style={{ width: 32, height: 32, border: 'none', background: 'transparent', borderRadius: 4, cursor: 'pointer', fontSize: t === 'H2' ? 13 : 14, fontWeight: 700, color: '#555', fontFamily: 'inherit' }}>{t}</button>
-                    ))}
-                  </div>
-                  <textarea
-                    value={content}
-                    onChange={e => setContent(e.target.value)}
-                    placeholder="เขียนเนื้อหาบทความของคุณที่นี่..."
-                    rows={16}
-                    style={{ width: '100%', padding: '16px 14px', border: 'none', fontSize: 15, fontFamily: 'inherit', color: '#242424', outline: 'none', resize: 'vertical', background: '#fff', lineHeight: 1.8, boxSizing: 'border-box' }}
-                  />
-                </div>
+                <textarea
+                  value={content}
+                  onChange={e => setContent(e.target.value)}
+                  placeholder="เขียนเนื้อหาบทความของคุณที่นี่..."
+                  rows={16}
+                  style={{ width: '100%', padding: '16px 14px', border: '1px solid #e5e5e5', borderRadius: 8, fontSize: 15, fontFamily: 'inherit', color: '#242424', outline: 'none', resize: 'vertical', background: '#fff', lineHeight: 1.8, boxSizing: 'border-box' }}
+                />
               </div>
             </div>
           </div>
