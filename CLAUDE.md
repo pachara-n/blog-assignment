@@ -29,7 +29,7 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 - `app/globals.css` — Tailwind directives only
 - `app/(public)/layout.tsx` — sticky header + footer shared across public pages
 - `app/(public)/page.tsx` — blog listing (search, 3-col grid, pagination 10/page)
-- `app/(public)/blog/[slug]/page.tsx` — blog detail (view count increment, gallery, approved comments)
+- `app/(public)/blog/[slug]/page.tsx` — blog detail (view count increment, gallery, approved comments, generateMetadata with OG tags)
 - `app/admin/login/page.tsx` — NextAuth credentials signIn
 - `app/admin/blogs/page.tsx` — blog management table (publish toggle, delete)
 - `app/admin/blogs/new/page.tsx` — create blog
@@ -37,7 +37,7 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 - `app/admin/comments/page.tsx` — comment moderation (filter tabs, approve/reject)
 - `components/AdminNav.tsx` — shared admin top nav (active tab, signOut)
 - `components/BlogTable.tsx` — client-side publish toggle + delete
-- `components/BlogEditor.tsx` — slug auto-gen, cover + gallery upload (max 6)
+- `components/BlogEditor.tsx` — timestamp-based slug auto-gen (overridable), cover + gallery upload (max 6)
 - `components/CommentForm.tsx` — public comment submit with Thai regex validation
 - `components/CommentTable.tsx` — approve/reject with optimistic UI
 - `app/api/blogs/route.ts` — GET public listing (search + pagination), POST create (admin)
@@ -45,7 +45,7 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 - `app/api/blogs/[id]/publish/route.ts` — PATCH toggle isPublished
 - `app/api/blogs/[id]/images/route.ts` — POST/DELETE Supabase Storage (bucket from `SUPABASE_STORAGE_BUCKET` env var)
 - `app/api/admin/blogs/route.ts` — GET all blogs including unpublished (admin only)
-- `app/api/comments/route.ts` — POST submit (Thai regex enforced server-side)
+- `app/api/comments/route.ts` — POST submit (Thai regex enforced server-side, IP-based rate limit 5 req/min)
 - `app/api/comments/[id]/route.ts` — PATCH status (admin only)
 - `prisma/schema.prisma` — full schema (Admin, Blog, BlogImage, Comment)
 - `prisma/migrations/` — committed migration files
@@ -53,6 +53,9 @@ A two-tier blog system built as a recruitment assignment. Public visitors can br
 - `types/css.d.ts` — CSS module type declaration for TypeScript
 - `.env.example` — template for all 8 required env vars (includes `SUPABASE_STORAGE_BUCKET`)
 - `next.config.mjs` — MJS format required (Next.js 14 does not support `.ts` config); Supabase + Pexels image domains configured
+- `app/not-found.tsx` — custom 404 page
+- `app/(public)/loading.tsx` — loading spinner for public routes (Suspense boundary)
+- `app/sitemap.ts` — dynamic sitemap, auto-generates `/sitemap.xml` listing all published blogs (used by search engines)
 
 ### Setup required before dev (needs real Supabase credentials)
 1. Copy `.env.example` → `.env` and fill in all values including `SUPABASE_STORAGE_BUCKET`
@@ -126,7 +129,7 @@ Range `ก-๙` covers all Thai characters including Thai numerals. Latin letter
 
 **Image uploads**: Use `supabaseAdmin` (service role) server-side. Reject more than 6 additional images at both client and server.
 
-**Slug uniqueness**: Auto-generate from title but allow manual override. Check uniqueness against DB before saving; surface error if duplicate.
+**Slug**: Auto-generated as `blog-{unix_timestamp}` on create (Thai titles cannot be used as URL slugs directly). Admin can override manually. Uniqueness checked against DB before saving.
 
 ### Seed Script
 
