@@ -10,51 +10,43 @@ export default function AdminNav() {
   const isCommentsActive = pathname.startsWith('/admin/comments')
 
   return (
-    <div style={{ background: '#fff', borderBottom: '1px solid #eaeaea' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-          <Link href="/admin/blogs" style={{ fontSize: 18, fontWeight: 700, color: '#242424', textDecoration: 'none', letterSpacing: '-0.3px' }}>
-            PacharaBlog <span style={{ fontWeight: 400, fontSize: 13, color: '#9ca3af', marginLeft: 4 }}>Admin</span>
+    <div className="bg-white border-b border-[#eaeaea]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        {/* แถวบน: logo + right actions */}
+        <div className="h-14 flex items-center justify-between">
+          <Link href="/admin/blogs" className="text-lg font-bold text-[#242424] no-underline tracking-[-0.3px]">
+            PacharaBlog <span className="font-normal text-[13px] text-[#9ca3af] ml-1">Admin</span>
           </Link>
-          <div style={{ display: 'flex', gap: 4 }}>
-            <Link
-              href="/admin/blogs"
-              style={{
-                fontSize: 14, textDecoration: 'none', fontWeight: isBlogsActive ? 500 : 400,
-                padding: '8px 14px', borderRadius: 6,
-                background: isBlogsActive ? '#f0f0f0' : 'transparent',
-                color: isBlogsActive ? '#242424' : '#757575',
-              }}
-            >
-              จัดการบทความ
+          <div className="flex items-center gap-4">
+            <Link href="/" target="_blank" className="text-[13px] text-[#757575] no-underline flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              <span className="hidden sm:inline">ดูเว็บ Blog</span>
             </Link>
-            <Link
-              href="/admin/comments"
-              style={{
-                fontSize: 14, textDecoration: 'none', fontWeight: isCommentsActive ? 500 : 400,
-                padding: '8px 14px', borderRadius: 6,
-                background: isCommentsActive ? '#f0f0f0' : 'transparent',
-                color: isCommentsActive ? '#242424' : '#757575',
-              }}
+            <button
+              onClick={() => signOut({ callbackUrl: '/admin/login' })}
+              className="text-[13px] text-[#ef4444] bg-transparent border-none cursor-pointer font-[inherit]"
             >
-              จัดการ Comment
-            </Link>
+              ออกจากระบบ
+            </button>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Link href="/" target="_blank" style={{ fontSize: 13, color: '#757575', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-            ดูเว็บ Blog
-          </Link>
-          <button
-            onClick={() => signOut({ callbackUrl: '/admin/login' })}
-            style={{ fontSize: 13, color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+        {/* แถวล่าง: nav tabs */}
+        <div className="flex gap-1 pb-0 -mb-px">
+          <Link
+            href="/admin/blogs"
+            className={`text-sm no-underline px-3.5 py-2.5 border-b-2 transition-colors ${isBlogsActive ? 'font-medium border-[#242424] text-[#242424]' : 'font-normal border-transparent text-[#757575]'}`}
           >
-            ออกจากระบบ
-          </button>
+            จัดการบทความ
+          </Link>
+          <Link
+            href="/admin/comments"
+            className={`text-sm no-underline px-3.5 py-2.5 border-b-2 transition-colors ${isCommentsActive ? 'font-medium border-[#242424] text-[#242424]' : 'font-normal border-transparent text-[#757575]'}`}
+          >
+            จัดการ Comment
+          </Link>
         </div>
       </div>
     </div>

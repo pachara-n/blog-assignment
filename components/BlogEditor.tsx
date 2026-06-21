@@ -138,44 +138,44 @@ export default function BlogEditor({
   const isEdit = mode === 'edit'
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f7f8', fontFamily: "'Noto Sans Thai', sans-serif" }}>
+    <div className="min-h-screen bg-[#f7f7f8]" style={{ fontFamily: "'Noto Sans Thai', sans-serif" }}>
       <AdminNav />
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: 32 }}>
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-8">
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, fontSize: 14 }}>
-          <Link href="/admin/blogs" style={{ color: '#757575', textDecoration: 'none' }}>จัดการบทความ</Link>
+        <div className="flex items-center gap-2 mb-6 text-sm">
+          <Link href="/admin/blogs" className="text-[#757575] no-underline">จัดการบทความ</Link>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="m9 18 6-6-6-6" />
           </svg>
-          <span style={{ color: '#242424', fontWeight: 500 }}>{isEdit ? 'แก้ไขบทความ' : 'สร้าง Blog ใหม่'}</span>
+          <span className="text-[#242424] font-medium">{isEdit ? 'แก้ไขบทความ' : 'สร้าง Blog ใหม่'}</span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 24, alignItems: 'start' }}>
+        <div className="flex flex-col lg:grid gap-6 items-start" style={{ gridTemplateColumns: '1fr 360px' }}>
           {/* Main Form */}
-          <div style={{ background: '#fff', border: '1px solid #eaeaea', borderRadius: 10, padding: 32 }}>
-            <h1 style={{ fontSize: 20, fontWeight: 600, color: '#242424', marginBottom: 28 }}>
+          <div className="w-full bg-white border border-[#eaeaea] rounded-[10px] p-6 sm:p-8">
+            <h1 className="text-xl font-semibold text-[#242424] mb-7">
               {isEdit ? 'แก้ไขบทความ' : 'สร้าง Blog ใหม่'}
             </h1>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div className="flex flex-col gap-6">
               {/* Title */}
               <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#242424', marginBottom: 6 }}>
-                  ชื่อ Blog <span style={{ color: '#ef4444' }}>*</span>
+                <label className="block text-sm font-medium text-[#242424] mb-1.5">
+                  ชื่อ Blog <span className="text-[#ef4444]">*</span>
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={e => handleTitleChange(e.target.value)}
                   placeholder="กรอกชื่อบทความ"
-                  style={{ width: '100%', height: 46, padding: '0 14px', border: '1px solid #e5e5e5', borderRadius: 8, fontSize: 15, fontFamily: 'inherit', color: '#242424', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
+                  className="w-full h-[46px] px-3.5 border border-[#e5e5e5] rounded-lg text-[15px] font-[inherit] text-[#242424] outline-none bg-white box-border"
                 />
               </div>
 
               {/* Slug */}
               <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#242424', marginBottom: 6 }}>URL Slug</label>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ height: 46, padding: '0 12px', background: '#fafafa', border: '1px solid #e5e5e5', borderRight: 'none', borderRadius: '8px 0 0 8px', fontSize: 13, color: '#9ca3af', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+                <label className="block text-sm font-medium text-[#242424] mb-1.5">URL Slug</label>
+                <div className="flex items-center">
+                  <span className="h-[46px] px-3 bg-[#fafafa] border border-[#e5e5e5] border-r-0 rounded-l-lg text-[13px] text-[#9ca3af] flex items-center whitespace-nowrap">
                     blog.pachara.app/blog/
                   </span>
                   <input
@@ -183,40 +183,41 @@ export default function BlogEditor({
                     value={slug}
                     onChange={e => setSlug(e.target.value)}
                     placeholder="auto-generated-slug"
-                    style={{ flex: 1, height: 46, padding: '0 14px', border: '1px solid #e5e5e5', borderRadius: '0 8px 8px 0', fontSize: 14, fontFamily: 'monospace', color: '#242424', outline: 'none', background: '#fff', boxSizing: 'border-box' }}
+                    className="flex-1 min-w-0 h-[46px] px-3.5 border border-[#e5e5e5] rounded-r-lg text-sm font-mono text-[#242424] outline-none bg-white box-border"
                   />
                 </div>
-                <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>Slug จะถูกสร้างอัตโนมัติ หรือพิมพ์เองได้</p>
+                <p className="text-xs text-[#9ca3af] mt-1">Slug จะถูกสร้างอัตโนมัติ หรือพิมพ์เองได้</p>
               </div>
 
               {/* Content */}
               <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#242424', marginBottom: 6 }}>
-                  เนื้อหา Blog <span style={{ color: '#ef4444' }}>*</span>
+                <label className="block text-sm font-medium text-[#242424] mb-1.5">
+                  เนื้อหา Blog <span className="text-[#ef4444]">*</span>
                 </label>
                 <textarea
                   value={content}
                   onChange={e => setContent(e.target.value)}
                   placeholder="เขียนเนื้อหาบทความของคุณที่นี่..."
                   rows={16}
-                  style={{ width: '100%', padding: '16px 14px', border: '1px solid #e5e5e5', borderRadius: 8, fontSize: 15, fontFamily: 'inherit', color: '#242424', outline: 'none', resize: 'vertical', background: '#fff', lineHeight: 1.8, boxSizing: 'border-box' }}
+                  className="w-full px-3.5 py-4 border border-[#e5e5e5] rounded-lg text-[15px] font-[inherit] text-[#242424] outline-none resize-y bg-white leading-[1.8] box-border"
                 />
               </div>
             </div>
           </div>
 
           {/* Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div className="w-full flex flex-col gap-5">
             {/* Cover Image */}
-            <div style={{ background: '#fff', border: '1px solid #eaeaea', borderRadius: 10, padding: 24 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: '#242424', marginBottom: 16 }}>รูปปก</h3>
+            <div className="bg-white border border-[#eaeaea] rounded-[10px] p-6">
+              <h3 className="text-[15px] font-semibold text-[#242424] mb-4">รูปปก</h3>
               {coverUrl ? (
-                <div style={{ position: 'relative', marginBottom: 12 }}>
+                <div className="relative mb-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={coverUrl} alt="" style={{ width: '100%', aspectRatio: '16/10', objectFit: 'cover', borderRadius: 8 }} />
+                  <img src={coverUrl} alt="" className="w-full object-cover rounded-lg" style={{ aspectRatio: '16/10' }} />
                   <button
                     onClick={() => setCoverUrl('')}
-                    style={{ position: 'absolute', top: 8, right: 8, width: 28, height: 28, borderRadius: '50%', background: 'rgba(0,0,0,0.5)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    className="absolute top-2 right-2 w-7 h-7 rounded-full border-none cursor-pointer flex items-center justify-center"
+                    style={{ background: 'rgba(0,0,0,0.5)' }}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -227,35 +228,37 @@ export default function BlogEditor({
                 <button
                   onClick={() => savedBlogId.current && coverInputRef.current?.click()}
                   disabled={!savedBlogId.current}
-                  style={{ width: '100%', aspectRatio: '16/10', border: '2px dashed #e0e0e0', borderRadius: 8, background: '#fafafa', cursor: savedBlogId.current ? 'pointer' : 'not-allowed', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'inherit', opacity: savedBlogId.current ? 1 : 0.5 }}
+                  className="w-full border-2 border-dashed border-[#e0e0e0] rounded-lg bg-[#fafafa] flex flex-col items-center justify-center gap-2 font-[inherit]"
+                  style={{ aspectRatio: '16/10', cursor: savedBlogId.current ? 'pointer' : 'not-allowed', opacity: savedBlogId.current ? 1 : 0.5 }}
                 >
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
                   </svg>
-                  <span style={{ fontSize: 13, color: '#9ca3af' }}>คลิกเพื่ออัปโหลดรูปปก</span>
+                  <span className="text-[13px] text-[#9ca3af]">คลิกเพื่ออัปโหลดรูปปก</span>
                 </button>
               )}
-              <input ref={coverInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleCoverChange} />
+              <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
               {!savedBlogId.current && (
-                <p style={{ fontSize: 12, color: '#f59e0b', marginTop: 8 }}>กรุณาบันทึกบทความก่อนอัปโหลดรูป</p>
+                <p className="text-xs text-[#f59e0b] mt-2">กรุณาบันทึกบทความก่อนอัปโหลดรูป</p>
               )}
             </div>
 
             {/* Gallery */}
-            <div style={{ background: '#fff', border: '1px solid #eaeaea', borderRadius: 10, padding: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: '#242424' }}>รูปเพิ่มเติม</h3>
-                <span style={{ fontSize: 12, color: '#9ca3af' }}>{galleryImages.length} / 6 รูป</span>
+            <div className="bg-white border border-[#eaeaea] rounded-[10px] p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[15px] font-semibold text-[#242424]">รูปเพิ่มเติม</h3>
+                <span className="text-xs text-[#9ca3af]">{galleryImages.length} / 6 รูป</span>
               </div>
               {galleryImages.length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 12 }}>
+                <div className="grid grid-cols-3 gap-2 mb-3">
                   {galleryImages.map(img => (
-                    <div key={img.id} style={{ position: 'relative', aspectRatio: '1', borderRadius: 6, overflow: 'hidden' }}>
+                    <div key={img.id} className="relative rounded-md overflow-hidden" style={{ aspectRatio: '1' }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={img.url} alt="" className="w-full h-full object-cover" />
                       <button
                         onClick={() => removeGalleryImage(img.id)}
-                        style={{ position: 'absolute', top: 4, right: 4, width: 22, height: 22, borderRadius: '50%', background: 'rgba(0,0,0,0.5)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        className="absolute top-1 right-1 w-[22px] h-[22px] rounded-full border-none cursor-pointer flex items-center justify-center"
+                        style={{ background: 'rgba(0,0,0,0.5)' }}
                       >
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -269,7 +272,8 @@ export default function BlogEditor({
                 <button
                   onClick={() => savedBlogId.current && galleryInputRef.current?.click()}
                   disabled={!savedBlogId.current}
-                  style={{ width: '100%', height: 40, border: '1px dashed #e0e0e0', borderRadius: 6, background: 'transparent', cursor: savedBlogId.current ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, color: '#9ca3af', fontFamily: 'inherit', opacity: savedBlogId.current ? 1 : 0.5 }}
+                  className="w-full h-10 border border-dashed border-[#e0e0e0] rounded-md bg-transparent flex items-center justify-center gap-1.5 text-[13px] text-[#9ca3af] font-[inherit]"
+                  style={{ cursor: savedBlogId.current ? 'pointer' : 'not-allowed', opacity: savedBlogId.current ? 1 : 0.5 }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
@@ -277,25 +281,26 @@ export default function BlogEditor({
                   เพิ่มรูป
                 </button>
               )}
-              <input ref={galleryInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleGalleryChange} />
+              <input ref={galleryInputRef} type="file" accept="image/*" className="hidden" onChange={handleGalleryChange} />
             </div>
 
             {/* Actions */}
-            <div style={{ background: '#fff', border: '1px solid #eaeaea', borderRadius: 10, padding: 24 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className="bg-white border border-[#eaeaea] rounded-[10px] p-6">
+              <div className="flex flex-col gap-2.5">
                 {error && (
-                  <div style={{ padding: '10px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, color: '#b91c1c', fontSize: 13 }}>{error}</div>
+                  <div className="px-3.5 py-2.5 bg-[#fef2f2] border border-[#fecaca] rounded-lg text-[#b91c1c] text-[13px]">{error}</div>
                 )}
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  style={{ width: '100%', height: 44, background: saving ? '#555' : '#242424', color: '#fff', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 500, fontFamily: 'inherit', cursor: saving ? 'not-allowed' : 'pointer' }}
+                  className="w-full h-11 border-none rounded-lg text-sm font-medium font-[inherit] text-white"
+                  style={{ background: saving ? '#555' : '#242424', cursor: saving ? 'not-allowed' : 'pointer' }}
                 >
                   {saving ? 'กำลังบันทึก...' : 'บันทึก'}
                 </button>
                 <Link
                   href="/admin/blogs"
-                  style={{ width: '100%', height: 44, border: '1px solid #e5e5e5', borderRadius: 8, fontSize: 14, color: '#757575', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  className="w-full h-11 border border-[#e5e5e5] rounded-lg text-sm text-[#757575] no-underline flex items-center justify-center"
                 >
                   ยกเลิก
                 </Link>
@@ -303,7 +308,7 @@ export default function BlogEditor({
             </div>
 
             {saveSuccess && (
-              <div style={{ padding: '14px 18px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 8, color: '#166534', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div className="px-[18px] py-3.5 bg-[#f0fdf4] border border-[#bbf7d0] rounded-lg text-[#166534] text-[13px] flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
                 </svg>

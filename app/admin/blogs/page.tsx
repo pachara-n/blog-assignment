@@ -20,21 +20,17 @@ export default async function AdminBlogsPage() {
   const serialized = blogs.map(b => ({ ...b, createdAt: b.createdAt.toISOString() }))
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f7f8', fontFamily: "'Noto Sans Thai', sans-serif" }}>
+    <div className="min-h-screen bg-[#f7f7f8]" style={{ fontFamily: "'Noto Sans Thai', sans-serif" }}>
       <AdminNav />
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: 32 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
-            <h1 style={{ fontSize: 22, fontWeight: 700, color: '#242424', marginBottom: 4 }}>จัดการบทความ</h1>
-            <p style={{ fontSize: 14, color: '#9ca3af' }}>ทั้งหมด {blogs.length} บทความ</p>
+            <h1 className="text-xl sm:text-[22px] font-bold text-[#242424] mb-1">จัดการบทความ</h1>
+            <p className="text-sm text-[#9ca3af]">ทั้งหมด {blogs.length} บทความ</p>
           </div>
           <Link
             href="/admin/blogs/new"
-            style={{
-              height: 42, padding: '0 20px', background: '#242424', color: '#fff',
-              borderRadius: 8, fontSize: 14, fontWeight: 500, textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-            }}
+            className="inline-flex items-center gap-2 h-[42px] px-5 bg-[#242424] text-white rounded-lg text-sm font-medium no-underline self-start sm:self-auto"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />

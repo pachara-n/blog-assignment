@@ -28,12 +28,12 @@ export default async function AdminCommentsPage() {
   const pendingCount = comments.filter(c => c.status === 'PENDING').length
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f7f8', fontFamily: "'Noto Sans Thai', sans-serif" }}>
+    <div className="min-h-screen bg-[#f7f7f8]" style={{ fontFamily: "'Noto Sans Thai', sans-serif" }}>
       <AdminNav />
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: 32 }}>
-        <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#242424', marginBottom: 4 }}>จัดการ Comment</h1>
-          <p style={{ fontSize: 14, color: '#9ca3af' }}>
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-6 sm:py-8">
+        <div className="mb-6">
+          <h1 className="text-xl sm:text-[22px] font-bold text-[#242424] mb-1">จัดการ Comment</h1>
+          <p className="text-sm text-[#9ca3af]">
             ทั้งหมด {comments.length} ความคิดเห็น ({pendingCount} รอการอนุมัติ)
           </p>
         </div>

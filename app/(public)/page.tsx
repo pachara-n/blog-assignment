@@ -49,16 +49,16 @@ export default async function BlogListingPage({
   const start = (page - 1) * perPage
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 32px' }}>
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-8 py-8 sm:py-12">
       {/* Title & Search */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 36, gap: 24, flexWrap: 'wrap' }}>
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-9">
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: '#242424', marginBottom: 6 }}>บทความทั้งหมด</h1>
-          <p style={{ fontSize: 15, color: '#757575' }}>เทคโนโลยี การเขียนโปรแกรม และเทรนด์ดิจิทัลล่าสุด</p>
+          <h1 className="text-2xl sm:text-[28px] font-bold text-[#242424] mb-1.5">บทความทั้งหมด</h1>
+          <p className="text-[15px] text-[#757575]">เทคโนโลยี การเขียนโปรแกรม และเทรนด์ดิจิทัลล่าสุด</p>
         </div>
-        <form method="GET">
-          <div style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+        <form method="GET" className="w-full sm:w-auto">
+          <div className="relative">
+            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
               </svg>
@@ -68,11 +68,7 @@ export default async function BlogListingPage({
               type="text"
               defaultValue={q}
               placeholder="ค้นหาบทความ..."
-              style={{
-                width: 320, height: 44, padding: '0 16px 0 42px',
-                border: '1px solid #e5e5e5', borderRadius: 8, fontSize: 14,
-                fontFamily: 'inherit', color: '#242424', outline: 'none', background: '#fafafa',
-              }}
+              className="w-full sm:w-80 h-11 pl-10 pr-4 border border-[#e5e5e5] rounded-lg text-sm font-[inherit] text-[#242424] outline-none bg-[#fafafa]"
             />
           </div>
         </form>
@@ -80,8 +76,8 @@ export default async function BlogListingPage({
 
       {/* Result info */}
       {total > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <span style={{ fontSize: 13, color: '#9ca3af' }}>
+        <div className="mb-5">
+          <span className="text-[13px] text-[#9ca3af]">
             แสดง {start + 1}–{Math.min(start + perPage, total)} จาก {total} บทความ
           </span>
         </div>
@@ -89,17 +85,17 @@ export default async function BlogListingPage({
 
       {/* No results */}
       {blogs.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '80px 0' }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d5d5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16, display: 'block', margin: '0 auto 16px' }}>
+        <div className="text-center py-20">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d5d5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4">
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
           </svg>
-          <p style={{ fontSize: 17, color: '#757575', marginBottom: 8 }}>ไม่พบบทความที่ค้นหา</p>
-          <p style={{ fontSize: 14, color: '#9ca3af' }}>ลองค้นหาด้วยคำอื่นดู</p>
+          <p className="text-[17px] text-[#757575] mb-2">ไม่พบบทความที่ค้นหา</p>
+          <p className="text-sm text-[#9ca3af]">ลองค้นหาด้วยคำอื่นดู</p>
         </div>
       )}
 
       {/* Blog Card Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map((blog, i) => {
           const gradient = GRADIENTS[i % GRADIENTS.length]
           const excerpt = blog.content.replace(/<[^>]*>/g, '').slice(0, 120) + '...'
@@ -107,19 +103,15 @@ export default async function BlogListingPage({
             <Link
               key={blog.id}
               href={`/blog/${blog.slug}`}
-              style={{
-                display: 'block', borderRadius: 10, overflow: 'hidden',
-                border: '1px solid #eaeaea', textDecoration: 'none',
-                background: '#fff', transition: 'all 0.2s ease',
-              }}
+              className="block rounded-[10px] overflow-hidden border border-[#eaeaea] no-underline bg-white transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
             >
               {/* Thumbnail */}
-              <div style={{ width: '100%', aspectRatio: '16/10', position: 'relative', background: blog.coverImageUrl ? undefined : gradient, overflow: 'hidden' }}>
+              <div className="w-full overflow-hidden" style={{ aspectRatio: '16/10', background: blog.coverImageUrl ? undefined : gradient }}>
                 {blog.coverImageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={blog.coverImageUrl} alt={blog.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={blog.coverImageUrl} alt={blog.title} className="w-full h-full object-cover" />
                 ) : (
-                  <div style={{ width: '100%', height: '100%', background: gradient, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="w-full h-full flex items-center justify-center" style={{ background: gradient }}>
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5">
                       <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
                     </svg>
@@ -127,25 +119,18 @@ export default async function BlogListingPage({
                 )}
               </div>
               {/* Card Content */}
-              <div style={{ padding: 20 }}>
-                <h3 style={{
-                  fontSize: 16, fontWeight: 600, color: '#242424', marginBottom: 10,
-                  lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical', overflow: 'hidden',
-                }}>
+              <div className="p-5">
+                <h3 className="text-base font-semibold text-[#242424] mb-2.5 leading-relaxed line-clamp-2">
                   {blog.title}
                 </h3>
-                <p style={{
-                  fontSize: 14, color: '#757575', lineHeight: 1.7, marginBottom: 16,
-                  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-                }}>
+                <p className="text-sm text-[#757575] leading-[1.7] mb-4 line-clamp-2">
                   {excerpt}
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div className="flex items-center gap-1.5">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                   </svg>
-                  <span style={{ fontSize: 13, color: '#9ca3af' }}>{formatDate(blog.createdAt)}</span>
+                  <span className="text-[13px] text-[#9ca3af]">{formatDate(blog.createdAt)}</span>
                 </div>
               </div>
             </Link>
@@ -155,30 +140,21 @@ export default async function BlogListingPage({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 48 }}>
+        <div className="flex items-center justify-center gap-2 mt-12 flex-wrap">
           {page > 1 && (
-            <a href={`?q=${q}&page=${page - 1}`} style={{
-              height: 38, padding: '0 18px', border: '1px solid #e5e5e5', borderRadius: 8,
-              background: '#fff', color: '#242424', fontSize: 14, textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center',
-            }}>← ก่อนหน้า</a>
+            <a href={`?q=${q}&page=${page - 1}`} className="h-[38px] px-[18px] border border-[#e5e5e5] rounded-lg bg-white text-[#242424] text-sm no-underline inline-flex items-center">
+              ← ก่อนหน้า
+            </a>
           )}
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-            <a key={p} href={`?q=${q}&page=${p}`} style={{
-              minWidth: 38, height: 38, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              background: p === page ? '#242424' : '#fff',
-              color: p === page ? '#fff' : '#242424',
-              borderRadius: 8, fontSize: 14, fontWeight: p === page ? 500 : 400,
-              border: p === page ? 'none' : '1px solid #e5e5e5',
-              textDecoration: 'none',
-            }}>{p}</a>
+            <a key={p} href={`?q=${q}&page=${p}`} className={`min-w-[38px] h-[38px] inline-flex items-center justify-center rounded-lg text-sm no-underline ${p === page ? 'bg-[#242424] text-white font-medium border-0' : 'bg-white text-[#242424] border border-[#e5e5e5]'}`}>
+              {p}
+            </a>
           ))}
           {page < totalPages && (
-            <a href={`?q=${q}&page=${page + 1}`} style={{
-              height: 38, padding: '0 18px', border: '1px solid #e5e5e5', borderRadius: 8,
-              background: '#fff', color: '#242424', fontSize: 14, textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center',
-            }}>ถัดไป →</a>
+            <a href={`?q=${q}&page=${page + 1}`} className="h-[38px] px-[18px] border border-[#e5e5e5] rounded-lg bg-white text-[#242424] text-sm no-underline inline-flex items-center">
+              ถัดไป →
+            </a>
           )}
         </div>
       )}

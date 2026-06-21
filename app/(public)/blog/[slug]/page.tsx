@@ -62,18 +62,14 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
   return (
     <div>
       {/* Hero Image */}
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '32px 32px 0' }}>
-        <div style={{
-          width: '100%', aspectRatio: '21/9', borderRadius: 12, overflow: 'hidden',
-          background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
-        }}>
+      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 pt-6 sm:pt-8">
+        <div className="w-full rounded-xl overflow-hidden bg-[linear-gradient(135deg,#4f46e5,#7c3aed)] flex items-center justify-center relative" style={{ aspectRatio: '21/9' }}>
           {blog.coverImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={blog.coverImageUrl} alt={blog.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={blog.coverImageUrl} alt={blog.title} className="w-full h-full object-cover" />
           ) : (
             <>
-              <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 80px)' }} />
+              <div className="absolute inset-0" style={{ background: 'repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 80px)' }} />
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5">
                 <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" />
               </svg>
@@ -83,80 +79,78 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
       </div>
 
       {/* Article Content */}
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 32px' }}>
+      <div className="max-w-[760px] mx-auto px-4 sm:px-8 py-8 sm:py-10">
         {/* Meta */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div className="flex items-center gap-4 mb-5 flex-wrap">
+          <div className="flex items-center gap-1.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
             </svg>
-            <span style={{ fontSize: 14, color: '#757575' }}>{formatDate(blog.createdAt)}</span>
+            <span className="text-sm text-[#757575]">{formatDate(blog.createdAt)}</span>
           </div>
-          <div style={{ width: 1, height: 14, background: '#e5e5e5' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div className="w-px h-3.5 bg-[#e5e5e5]" />
+          <div className="flex items-center gap-1.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
             </svg>
-            <span style={{ fontSize: 14, color: '#757575' }}>เข้าชม {blog.viewCount.toLocaleString()} ครั้ง</span>
+            <span className="text-sm text-[#757575]">เข้าชม {blog.viewCount.toLocaleString()} ครั้ง</span>
           </div>
         </div>
 
         {/* Title */}
-        <h1 style={{ fontSize: 34, fontWeight: 700, color: '#242424', lineHeight: 1.5, marginBottom: 32, letterSpacing: '-0.3px' }}>
+        <h1 className="text-2xl sm:text-[34px] font-bold text-[#242424] leading-[1.5] mb-8 tracking-[-0.3px]">
           {blog.title}
         </h1>
 
         {/* Article Body */}
         <div
-          style={{ fontSize: 17, lineHeight: 2, color: '#333' }}
+          className="text-base sm:text-[17px] leading-[2] text-[#333]"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
       </div>
 
       {/* Gallery */}
       {blog.images.length > 0 && (
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px 48px' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto' }}>
-            <h2 style={{ fontSize: 20, fontWeight: 600, color: '#242424', marginBottom: 20 }}>รูปภาพประกอบ</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-              {blog.images.map(img => (
-                <div key={img.id} style={{ aspectRatio: '4/3', borderRadius: 8, overflow: 'hidden' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              ))}
-            </div>
+        <div className="max-w-[760px] mx-auto px-4 sm:px-8 pb-12">
+          <h2 className="text-xl font-semibold text-[#242424] mb-5">รูปภาพประกอบ</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {blog.images.map(img => (
+              <div key={img.id} className="rounded-lg overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img.url} alt="" className="w-full h-full object-cover" />
+              </div>
+            ))}
           </div>
         </div>
       )}
 
       {/* Divider */}
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 32px' }}>
-        <div style={{ borderTop: '1px solid #eaeaea' }} />
+      <div className="max-w-[760px] mx-auto px-4 sm:px-8">
+        <div className="border-t border-[#eaeaea]" />
       </div>
 
       {/* Comments */}
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '48px 32px' }}>
-        <h2 style={{ fontSize: 22, fontWeight: 600, color: '#242424', marginBottom: 28 }}>
-          ความคิดเห็น <span style={{ fontSize: 16, fontWeight: 400, color: '#9ca3af' }}>({blog.comments.length})</span>
+      <div className="max-w-[760px] mx-auto px-4 sm:px-8 py-12">
+        <h2 className="text-xl sm:text-[22px] font-semibold text-[#242424] mb-7">
+          ความคิดเห็น <span className="text-base font-normal text-[#9ca3af]">({blog.comments.length})</span>
         </h2>
 
         {blog.comments.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 40 }}>
+          <div className="flex flex-col gap-6 mb-10">
             {blog.comments.map(comment => (
-              <div key={comment.id} style={{ padding: '20px 24px', background: '#fafafa', borderRadius: 10, border: '1px solid #f0f0f0' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div key={comment.id} className="px-5 sm:px-6 py-5 bg-[#fafafa] rounded-[10px] border border-[#f0f0f0]">
+                <div className="flex items-center justify-between mb-2.5 gap-2 flex-wrap">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#e5e5e5] flex items-center justify-center shrink-0">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
                       </svg>
                     </div>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: '#242424' }}>{comment.authorName}</span>
+                    <span className="text-sm font-semibold text-[#242424]">{comment.authorName}</span>
                   </div>
-                  <span style={{ fontSize: 12, color: '#9ca3af' }}>{formatDateTime(comment.createdAt)}</span>
+                  <span className="text-xs text-[#9ca3af]">{formatDateTime(comment.createdAt)}</span>
                 </div>
-                <p style={{ fontSize: 15, color: '#555', lineHeight: 1.7, paddingLeft: 42 }}>{comment.content}</p>
+                <p className="text-[15px] text-[#555] leading-[1.7] pl-[42px]">{comment.content}</p>
               </div>
             ))}
           </div>
