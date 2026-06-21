@@ -1,8 +1,32 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import CommentForm from '@/components/CommentForm'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const blog = await prisma.blog.findUnique({
+    where: { slug: params.slug },
+    select: { title: true, content: true, coverImageUrl: true, isPublished: true },
+  })
+
+  if (!blog || !blog.isPublished) return {}
+
+  const description = blog.content.replace(/<[^>]*>/g, '').slice(0, 160)
+
+  return {
+    title: blog.title,
+    description,
+    openGraph: {
+      title: blog.title,
+      description,
+      images: blog.coverImageUrl && blog.coverImageUrl !== 'placeholder'
+        ? [{ url: blog.coverImageUrl }]
+        : [],
+    },
+  }
+}
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })
